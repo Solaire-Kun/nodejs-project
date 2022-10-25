@@ -18,10 +18,10 @@ app.use('/orders', ordersRoute);
 app.use('/users', usersRoute);
 
 // Connect
-mongoose.connect(process.env.DB_CONNECTION, () => console.log("connected"));
+mongoose.connect(process.env.DB_CONNECTION, () => console.log("Connected!"));
 
 app.get('/', (req, res) => {
-    res.send('Go to <a href="/users"Users</a>').status(200);
+    res.send('Home').status(200);
 })
 
 // 404 Page

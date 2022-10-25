@@ -13,13 +13,14 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    orderId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Orders',
+        default: null
+    },
     creationDate: {
         type: Date,
         default: Date.now
-    },
-    orders: {
-        type: Array,
-        default: []
     }
 });
 
