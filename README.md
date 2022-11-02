@@ -71,12 +71,16 @@ and send the request.
 Simply do a **DELETE** request to localhost:300/users/ID OR /outfits/ID OR /orders/ID ... <br>
 for example if you want to delete an User: ```localhost:300/users/6357ebfb2690f2d097817df1```
 
+- **How to upload a picture:** <br>
+To upload a picture make a request to localhost:300/upload, click in form-data in postman change the Key Text to File and upload 2 pictures.
+
 <!-- LANGUAGES USED -->
 ## Languages Used
 
 - **Node.js**
 - **Express**
 - **Mongoose**
+- **Multer**
 
 <!-- CONTACT -->
 ## Contact Me
