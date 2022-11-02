@@ -66,25 +66,24 @@ const user_delete = async (req, res) => {
             return res.json({ message: 'User not found' }).status(404);
 
         } else if (user.orderId != null) {
-
             const order = await Order.findById(user.orderId)
+
             if (order.outfitId != []) {
                 const outfit = await Outfit.find({ _id: order.outfitId })
                 for (let i = 0; i < outfit.length; i++) {
-                    outfit[i].$set({ orderId: null }).save()
+                    outfit[i].$set({ orderId: null }).save();
                 };
                 order.deleteOne();
                 user.deleteOne();
                 res.json('User successfully deleted!').status(202);
+            } else {
+                user.deleteOne();
+                res.json('User successfully deleted!').status(202);
             };
-            
-        } else {
-            user.deleteOne();
-            res.json('User successfully deleted!').status(202);
         };
-
+        
     } catch (err) {
-        res.json({ message: err }).status(404);
+        res.json({ message: 'e '+err }).status(404);
     };
 };
 

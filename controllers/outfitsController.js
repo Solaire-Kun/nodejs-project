@@ -65,32 +65,23 @@ const outfit_delete = async (req, res) => {
         const outfit = await Outfit.findById(req.params.outfitId);
         if (!outfit) {
             return res.json({ message: 'Outfit not found' }).status(404);
-        };
-
-        if (outfit && outfit.orderId === null) {
+        } else if (outfit && outfit.orderId === null) {
             outfit.deleteOne();
             res.json('Outfit successfully deleted!').status(202);
-
         } else if (outfit && outfit.orderId !== null) {
-
-            const order = await Order.findById(outfit.orderId)
-            order.updateOne({ $pull: { outfitId: outfit._id } })
-
+            const order = await Order.findById(outfit.orderId);
+            order.updateOne({ $pull: { outfitId: outfit._id }}).exec();
             if (order.outfitId.length <= 1) {
                 order.deleteOne();
                 outfit.deleteOne();
-
                 const user = await User.findById(order.userId)
                 user.$set({ orderId: null }).save();
-
                 res.json('Outfit and Order successfully deleted!').status(202);
-
             } else {
                 outfit.deleteOne();
-                res.json('Outfit successfully deleted!').status(202);
+                res.json('Outfit successfully deleted!').status(202); 
             };
         };
-
     } catch (err) {
         res.json({ message: err }).status(404);
     };
