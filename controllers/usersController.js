@@ -83,7 +83,7 @@ const user_delete = async (req, res) => {
         };
         
     } catch (err) {
-        res.json({ message: 'e '+err }).status(404);
+        res.json({ message: err }).status(404);
     };
 };
 
