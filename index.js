@@ -7,7 +7,7 @@ const multer = require('multer');
 require('dotenv/config');
 
 // Routes
-const outfitsRoute = require('./routes/outfits');
+const productsRoute = require('./routes/products');
 const ordersRoute = require('./routes/orders');
 const usersRoute = require('./routes/users');
 
@@ -24,7 +24,7 @@ const upload = multer({ storage: FileStorage })
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use('/outfits', outfitsRoute);
+app.use('/products', productsRoute);
 app.use('/orders', ordersRoute);
 app.use('/users', usersRoute);
 

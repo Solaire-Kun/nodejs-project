@@ -15,7 +15,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-A custom API of an imaginary online outfit store for [start2impact](https://www.start2impact.it) project. <br>
+A custom API of an imaginary online product store for [start2impact](https://www.start2impact.it) project. <br>
 You are an administrator, you can manage, create, update, users, products and orders.
 
 <!-- USAGE -->
@@ -30,7 +30,6 @@ You are an administrator, you can manage, create, update, users, products and or
 <br>
 
 - **How to create a User:**
-
 ```
 {
     "name": "Name of the user",
@@ -39,26 +38,27 @@ You are an administrator, you can manage, create, update, users, products and or
 }
 ```
 
-- **How to create an Outfit:**
+- **How to create an Product:**
 ```
 {
-    "outfitName": "Name of the outfit",
-    "size": "Size of the Outfit",
-    "pictures": "Pictures of this Outfit",
-    "brand": "Brand of the Outfit"
+    "productName": "Name of the product",
+    "size": "Size of the Product",
+    "brand": "Brand of the Product",
+    "pictures": "Pictures of this Product"
 }
 ```
 
 - **How to create an Order:**
 ```
 {
-    "outfitId": ["ID of an existing Outfit 1", "ID  of an existing Outfit 2"], ... you can put as many Outfits you like just make sure each ID is separeted by a ,
-    "userId": "ID of an existing User"
+    "productId": ["ID of an existing Product 1", "ID  of an existing Product 2"],
+    "userId": ["ID of an existing User 1", "ID of an existing User 2"]
 }
 ```
+you can put as many Products/Users you like.
 
 - **How to update anything:** <br>
-Simply do a **PATCH** request to localhost:300/users/ID OR /outfits/ID OR /orders/ID ... <br>
+Simply do a **PATCH** request to localhost:300/users/ID OR /products/ID OR /orders/ID ... <br>
 Then if you want to update an User name for example do the following:
 ```
 {
@@ -68,11 +68,11 @@ Then if you want to update an User name for example do the following:
 and send the request.
 
 - **How to delete anything:** <br>
-Simply do a **DELETE** request to localhost:300/users/ID OR /outfits/ID OR /orders/ID ... <br>
+Simply do a **DELETE** request to localhost:300/users/ID OR /products/ID OR /orders/ID ... <br>
 for example if you want to delete an User: ```localhost:300/users/6357ebfb2690f2d097817df1```
 
 - **How to upload a picture:** <br>
-To upload a picture make a request to localhost:300/upload, click in form-data in postman change the Key Text to File and upload 2 pictures.
+To upload a picture make a **POST** request to localhost:300/upload, click in form-data in postman change the Key Text to File and upload 2 pictures and send.
 
 <!-- LANGUAGES USED -->
 ## Languages Used

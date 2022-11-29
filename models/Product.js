@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const OutfitSchema = mongoose.Schema({
-    outfitName: {
+const ProductSchema = mongoose.Schema({
+    productName: {
         type: String,
         required: true
     },
@@ -17,15 +17,10 @@ const OutfitSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    orderId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Orders',
-        default: null
-    },
     insertionDate: {
         type: Date,
         default: Date.now
     }
 });
 
-module.exports = mongoose.model('Outfits', OutfitSchema);
+module.exports = mongoose.model('Products', ProductSchema);

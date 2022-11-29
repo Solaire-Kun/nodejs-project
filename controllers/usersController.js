@@ -1,12 +1,11 @@
-const Outfit = require('../models/Outfit');
 const User = require('../models/User');
-const Order = require('../models/Order');
 
 // Get All User
 const user_get_all = async (req, res) => {
     try {
         const usersList = await User.find();
         res.json(usersList).status(200);
+
     } catch (err) {
         res.json({ message: err }).status(404);
     };
@@ -21,6 +20,7 @@ const user_get_id = async (req, res) => {
         } else {
             res.json(user).status(200);
         };
+
     } catch (err) {
         res.json({ message: err }).status(404);
     };
@@ -37,6 +37,7 @@ const user_post = async (req, res) => {
     try {
         const createUser = await user.save();
         res.json(createUser).status(201);
+
     } catch (err) {
         res.json({ message: err }).status(404);
     };
@@ -52,7 +53,8 @@ const user_patch = async (req, res) => {
                 email: req.body.email
             }
         });
-        res.json(updateUser).status(200);
+        res.json({ message: 'User not found' }).status(200);
+
     } catch (err) {
         res.json({ message: err }).status(404);
     };
@@ -65,23 +67,11 @@ const user_delete = async (req, res) => {
         if (!user) {
             return res.json({ message: 'User not found' }).status(404);
 
-        } else if (user.orderId != null) {
-            const order = await Order.findById(user.orderId)
-
-            if (order.outfitId != []) {
-                const outfit = await Outfit.find({ _id: order.outfitId })
-                for (let i = 0; i < outfit.length; i++) {
-                    outfit[i].$set({ orderId: null }).save();
-                };
-                order.deleteOne();
-                user.deleteOne();
-                res.json('User successfully deleted!').status(202);
-            } else {
-                user.deleteOne();
-                res.json('User successfully deleted!').status(202);
-            };
+        } else {
+            user.deleteOne();
+            res.json('User successfully deleted!').status(202);
         };
-        
+
     } catch (err) {
         res.json({ message: err }).status(404);
     };

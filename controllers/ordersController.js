@@ -1,4 +1,4 @@
-const Outfit = require('../models/Outfit');
+const Product = require('../models/Product');
 const User = require('../models/User');
 const Order = require('../models/Order');
 
@@ -7,6 +7,7 @@ const order_get_all = async (req, res) => {
     try {
         const ordersList = await Order.find().sort({ creationDate: -1 });
         res.json(ordersList).status(200);
+
     } catch (err) {
         res.json({ message: err }).status(404);
     };
@@ -21,6 +22,7 @@ const order_get_id = async (req, res) => {
         } else {
             res.json(order).status(200);
         };
+
     } catch (err) {
         res.json({ message: err }).status(404);
     };
@@ -29,29 +31,36 @@ const order_get_id = async (req, res) => {
 // Create New Order
 const order_post = async (req, res) => {
     try {
-        const outfits = await Outfit.find({ _id: req.body.outfitId })
-        if (!outfits || outfits.length === 0) {
-            return res.json({ message: 'Outfit not found' }).status(404);
+        const products = await Product.find({ _id: req.body.productId })
+        if (!products || products.length === 0) {
+            return res.json({ message: 'Product not found' }).status(404);
         };
 
-        const user = await User.findById(req.body.userId);
-        if (!user) {
+        const users = await User.find({ _id: req.body.userId });
+        if (!users || users.length === 0) {
             return res.json({ message: 'User not found' }).status(404);
         };
 
         const item = [];
+        const customer = [];
         const order = new Order({
-            outfitId: item,
-            userId: req.body.userId
+            productId: item,
+            userId: customer
         });
 
-        for (let i = 0; i < outfits.length; i++) {
-            outfits[i].$set({ orderId: order._id }).save()
-            item.push(outfits[i]._id)
+        for (let i = 0; i < products.length; i++) {
+            item.push(products[i]._id);
         };
 
-        user.$set({ orderId: order._id }).save();
-        order.$set({ outfitId: item }).save();
+        for (let i = 0; i < users.length; i++) {
+            customer.push(users[i]._id);
+        };
+
+        order.$set({
+            productId: item,
+            userId: customer
+        }).save();
+
         res.json(order).status(201);
 
     } catch (err) {
@@ -67,25 +76,36 @@ const order_patch = async (req, res) => {
             return res.json({ message: 'Order not found' }).status(404);
         };
 
-        const clearOutfit = await Outfit.find({ _id: order.outfitId });
-        clearOutfit.forEach((outfit) => {outfit.$set({ orderId: null }).save()});
+        const products = await Product.find({ _id: req.body.productId });
+        if (!products || products.length === 0) {
+            return res.json({ message: 'Product not found' }).status(404);
+        };
 
-        const outfits = await Outfit.find({ _id: req.body.outfitId });
-        if (!outfits || outfits.length === 0) {
-            return res.json({ message: 'Outfit not found' }).status(404);
+        const users = await User.find({ _id: req.body.userId });
+        if (!users || users.length === 0) {
+            return res.json({ message: 'User not found' }).status(404);
         };
 
         const item = [];
+        const customer = [];
         const updateOrder = order.$set({
-            outfitId: item
+            productId: item,
+            userId: customer
         });
 
-        for (let i = 0; i < outfits.length; i++) {
-            outfits[i].$set({ orderId: order._id }).save()
-            item.push(outfits[i]._id)
+        for (let i = 0; i < products.length; i++) {
+            item.push(products[i]._id);
         };
 
-        updateOrder.$set({ outfitId: item }).save();
+        for (let i = 0; i < users.length; i++) {
+            customer.push(users[i]._id);
+        };
+
+        updateOrder.$set({
+            productId: item,
+            userId: customer
+        }).save();
+
         res.json(updateOrder).status(200);
 
     } catch (err) {
@@ -100,13 +120,6 @@ const order_delete = async (req, res) => {
         if (!order) {
             return res.json({ message: 'Order not found' }).status(404);
         };
-
-        const outfits = await Outfit.find({ _id: order.outfitId });
-        outfits.forEach((outfit) => outfit.$set({ orderId: null }).save());
-
-        const user = await User.findById(order.userId);
-        user.$set({ orderId: null }).save();
-
         order.deleteOne();
         return res.json('Order successfully deleted!').status(202);
 
